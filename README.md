@@ -1,5 +1,5 @@
 # ClientServersChat
-A simple message relay  in C#. It consists of a client, a processing server and a display server.
+A simple message relay in C#
 
 ## Structure
 - `Client/` - connects to the processing server and sends messages
