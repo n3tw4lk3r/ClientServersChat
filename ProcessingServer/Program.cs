@@ -1,0 +1,66 @@
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+
+class ProcessingServer
+{
+    static void Main()
+    {
+        TcpListener listener = new TcpListener(IPAddress.Any, 5000);
+        listener.Start();
+        Console.WriteLine("Processing server launched on port 5000");
+
+        while (true)
+        {
+            TcpClient client = listener.AcceptTcpClient();
+            Console.WriteLine("A client has connected.");
+
+            Thread clientThread = new Thread(() => HandleClient(client));
+            clientThread.Start();
+        }
+    }
+
+    static void HandleClient(TcpClient client)
+    {
+        try
+        {
+            using NetworkStream clientStream = client.GetStream();
+            using TcpClient displayClient = new TcpClient("127.0.0.1", 6000);
+            using NetworkStream displayStream = displayClient.GetStream();
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = clientStream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                string input = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                string processed = Process(input);
+                byte[] outputData = Encoding.UTF8.GetBytes(processed);
+                displayStream.Write(outputData, 0, outputData.Length);
+            }
+
+            Console.WriteLine("The client has disconnected.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in client's stream: {ex.Message}");
+        }
+    }
+
+    static string Process(string text)
+    {
+        string[] words = text.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+        HashSet<string> seen = new();
+        StringBuilder result = new StringBuilder();
+
+        foreach (string word in words)
+        {
+            if (seen.Add(word))
+                result.Append(word).Append(' ');
+        }
+
+        return result.ToString().Trim() + "\n";
+    }
+}
