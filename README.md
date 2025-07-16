@@ -20,5 +20,5 @@ dotnet run --project ProcessingServer
 
 Then you may launch as many clients as you like (each one in a different terminal, with a different LocalPort):
 ```Bash
-dotnet run --project Client -- <ProcessingServerIP> <LocalPort>"
+dotnet run --project Client -- <ProcessingServerIP> <LocalPort>
 ```
