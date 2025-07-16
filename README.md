@@ -1,7 +1,7 @@
 # ClientServersChat
 
-A simple message relay in C#.
-DisplayServer port (6000) and ProcessingServer port (5000) are hardcoded. You have to specify ProcessingServer's ip and client's port using command line arguments when running each client.
+A simple message relay in C#.  
+DisplayServer's port (6000) and ProcessingServer's port (5000) are hardcoded. You have to specify ProcessingServer's ip and client's port using command line arguments when running each client.
 
 ## Structure
 
