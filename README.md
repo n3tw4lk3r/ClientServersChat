@@ -1,6 +1,7 @@
 # ClientServersChat
 
-A simple message relay in C#
+A simple message relay in C#.
+DisplayServer port (6000) and ProcessingServer port (5000) are hardcoded. You have to specify ProcessingServer's ip and client's port using command line arguments when running each client.
 
 ## Structure
 
@@ -17,7 +18,7 @@ dotnet run --project DisplayServer
 dotnet run --project ProcessingServer
 ```
 
-Then you may launch as many clients as you like (each one in a different terminal):
+Then you may launch as many clients as you like (each one in a different terminal, with a different LocalPort):
 ```Bash
-dotnet run --project Client
+dotnet run --project Client -- <ProcessingServerIP> <LocalPort>"
 ```

@@ -10,12 +10,12 @@ class DisplayServer
     {
         TcpListener listener = new TcpListener(IPAddress.Any, 6000);
         listener.Start();
-        Console.WriteLine("Display server launched on port 6000");
+        Console.WriteLine("Display server launched on port 6000.");
 
         while (true)
         {
             TcpClient client = listener.AcceptTcpClient();
-            Console.WriteLine("Processing server has connected.");
+            Console.WriteLine("A client has connected.");
 
             Thread clientThread = new Thread(() => HandleClient(client));
             clientThread.Start();

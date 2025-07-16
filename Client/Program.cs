@@ -1,21 +1,36 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
 class Client
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        using TcpClient client = new TcpClient("127.0.0.1", 5000);
+        if (args.Length != 2)
+        {
+            Console.WriteLine("Usage: Client <ProcessingServerIP> <LocalPort>");
+            return;
+        }
+
+        string processingServerIp = args[0];
+        int serverPort = 5000;
+        int localPort = Convert.ToInt32(args[1]);
+
+        var localEndPoint = new IPEndPoint(IPAddress.Any, localPort);
+        TcpClient client = new TcpClient(localEndPoint);
+        client.Connect(processingServerIp, serverPort);
+
+        Console.WriteLine($"Connected to {processingServerIp}:{serverPort} from local port {localPort}");
+
         using NetworkStream stream = client.GetStream();
 
-        Console.WriteLine("Enter your message. Press Ctrl-C to quit.");
+        Console.WriteLine("Enter your messages. Press Ctrl-C to quit:");
 
         while (true)
         {
             Console.Write("> ");
             string? message = Console.ReadLine();
-
             if (string.IsNullOrWhiteSpace(message))
                 continue;
 

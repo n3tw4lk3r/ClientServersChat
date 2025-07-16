@@ -10,7 +10,7 @@ class ProcessingServer
     {
         TcpListener listener = new TcpListener(IPAddress.Any, 5000);
         listener.Start();
-        Console.WriteLine("Processing server launched on port 5000");
+        Console.WriteLine("Processing server launched on port 5000.");
 
         while (true)
         {
@@ -26,6 +26,12 @@ class ProcessingServer
     {
         try
         {
+            var remoteEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
+            string clientIp = remoteEndPoint?.Address.ToString() ?? "unknown";
+            int clientPort = remoteEndPoint?.Port ?? -1;
+
+            string clientTag = $"[{clientIp}:{clientPort}]";
+
             using NetworkStream clientStream = client.GetStream();
             using TcpClient displayClient = new TcpClient("127.0.0.1", 6000);
             using NetworkStream displayStream = displayClient.GetStream();
@@ -37,11 +43,12 @@ class ProcessingServer
             {
                 string input = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                 string processed = Process(input);
-                byte[] outputData = Encoding.UTF8.GetBytes(processed);
+                string tagged = $"{clientTag} {processed}";
+                byte[] outputData = Encoding.UTF8.GetBytes(tagged);
                 displayStream.Write(outputData, 0, outputData.Length);
             }
 
-            Console.WriteLine("The client has disconnected.");
+            Console.WriteLine($"Client {clientTag} disconnected.");
         }
         catch (Exception ex)
         {
