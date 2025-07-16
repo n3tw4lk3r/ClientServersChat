@@ -10,10 +10,14 @@ A simple message relay in C#
 
 ## Run
 
-In different terminals:
+Run each command in a different terminal:
 
 ```Bash
 dotnet run --project DisplayServer
 dotnet run --project ProcessingServer
+```
+
+Then you may launch as many clients as you like (each one in a different terminal):
+```Bash
 dotnet run --project Client
 ```
