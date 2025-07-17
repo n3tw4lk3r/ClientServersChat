@@ -17,11 +17,11 @@ class Client
         int serverPort = 5000;
         int localPort = Convert.ToInt32(args[1]);
 
-        var localEndPoint = new IPEndPoint(IPAddress.Any, localPort);
+        IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, localPort);
         TcpClient client = new TcpClient(localEndPoint);
         client.Connect(processingServerIp, serverPort);
 
-        Console.WriteLine($"Connected to {processingServerIp}:{serverPort} from local port {localPort}");
+        Console.WriteLine($"Connected to {processingServerIp}:{serverPort} from local port {localPort}.");
 
         using NetworkStream stream = client.GetStream();
 

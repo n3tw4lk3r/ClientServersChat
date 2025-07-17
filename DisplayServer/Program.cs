@@ -17,12 +17,12 @@ class DisplayServer
             TcpClient client = listener.AcceptTcpClient();
             Console.WriteLine("A client has connected.");
 
-            Thread clientThread = new Thread(() => HandleClient(client));
+            Thread clientThread = new Thread(() => HandleClient(ref client));
             clientThread.Start();
         }
     }
 
-    static void HandleClient(TcpClient client)
+    static void HandleClient(ref readonly TcpClient client)
     {
         try
         {

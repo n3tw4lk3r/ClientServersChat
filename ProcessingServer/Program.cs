@@ -17,12 +17,12 @@ class ProcessingServer
             TcpClient client = listener.AcceptTcpClient();
             Console.WriteLine("A client has connected.");
 
-            Thread clientThread = new Thread(() => HandleClient(client));
+            Thread clientThread = new Thread(() => HandleClient(ref client));
             clientThread.Start();
         }
     }
 
-    static void HandleClient(TcpClient client)
+    static void HandleClient(ref readonly TcpClient client)
     {
         try
         {
@@ -42,7 +42,7 @@ class ProcessingServer
             while ((bytesRead = clientStream.Read(buffer, 0, buffer.Length)) > 0)
             {
                 string input = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                string processed = Process(input);
+                string processed = Process(ref input);
                 string tagged = $"{clientTag} {processed}";
                 byte[] outputData = Encoding.UTF8.GetBytes(tagged);
                 displayStream.Write(outputData, 0, outputData.Length);
@@ -56,10 +56,10 @@ class ProcessingServer
         }
     }
 
-    static string Process(string text)
+    static string Process(ref readonly string text)
     {
         string[] words = text.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-        HashSet<string> seen = new();
+        HashSet<string> seen = new HashSet<string>();
         StringBuilder result = new StringBuilder();
 
         foreach (string word in words)
