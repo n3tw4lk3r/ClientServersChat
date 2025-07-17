@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 class DisplayServer
 {
@@ -17,12 +15,12 @@ class DisplayServer
             TcpClient client = listener.AcceptTcpClient();
             Console.WriteLine("A client has connected.");
 
-            Thread clientThread = new Thread(() => HandleClient(ref client));
+            Thread clientThread = new Thread(() => HandleClient(client));
             clientThread.Start();
         }
     }
 
-    static void HandleClient(ref readonly TcpClient client)
+    static void HandleClient(TcpClient client)
     {
         try
         {
@@ -36,7 +34,7 @@ class DisplayServer
                 Console.WriteLine(message.Trim());
             }
 
-            Console.WriteLine("Processing server disconnected.");
+            Console.WriteLine("Client has disconnected.");
         }
         catch (Exception ex)
         {

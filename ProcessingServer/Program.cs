@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 class ProcessingServer
 {
@@ -42,7 +40,7 @@ class ProcessingServer
             while ((bytesRead = clientStream.Read(buffer, 0, buffer.Length)) > 0)
             {
                 string input = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                string processed = Process(ref input);
+                string processed = Process(input);
                 string tagged = $"{clientTag} {processed}";
                 byte[] outputData = Encoding.UTF8.GetBytes(tagged);
                 displayStream.Write(outputData, 0, outputData.Length);
@@ -56,7 +54,7 @@ class ProcessingServer
         }
     }
 
-    static string Process(ref readonly string text)
+    static string Process(string text)
     {
         string[] words = text.Split(new[] { ' ', '\t', '\n', '\r' },
                                     StringSplitOptions.RemoveEmptyEntries);
