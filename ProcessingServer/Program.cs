@@ -58,7 +58,8 @@ class ProcessingServer
 
     static string Process(ref readonly string text)
     {
-        string[] words = text.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] words = text.Split(new[] { ' ', '\t', '\n', '\r' },
+                                    StringSplitOptions.RemoveEmptyEntries);
         HashSet<string> seen = new HashSet<string>();
         StringBuilder result = new StringBuilder();
 

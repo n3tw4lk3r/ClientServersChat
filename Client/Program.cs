@@ -21,7 +21,7 @@ class Client
         TcpClient client = new TcpClient(localEndPoint);
         client.Connect(processingServerIp, serverPort);
 
-        Console.WriteLine($"Connected to {processingServerIp}:{serverPort} from local port {localPort}.");
+        Console.WriteLine($"Connected to {processingServerIp}:{serverPort}.");
 
         using NetworkStream stream = client.GetStream();
 
